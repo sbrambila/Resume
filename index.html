@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sergio A. Brambila-Macías — Sustainable Systems Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e1410;
+      --bg2: #141c16;
+      --surface: #1a241d;
+      --surface2: #1f2d22;
+      --cream: #e8dfc8;
+      --cream2: #f2ead8;
+      --green: #4a7c59;
+      --green-light: #6aab7e;
+      --green-pale: #2a4a32;
+      --amber: #c8943a;
+      --amber-light: #e0aa50;
+      --text: #d4c9b0;
+      --text-dim: #8a8070;
+      --border: #2a3d2e;
+      --mono: 'JetBrains Mono', monospace;
+      --serif: 'Cormorant Garamond', serif;
+      --body-serif: 'Libre Baskerville', serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body-serif);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(14,20,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--green-light);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--green-light);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--cream); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 8rem 6rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--cream2);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--amber-light);
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--green-light);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-tagline {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      max-width: 420px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .hero-contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 1s forwards;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .contact-item a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .contact-item a:hover { color: var(--amber-light); }
+
+    .contact-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-grid-art {
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+    }
+
+    .nationality-badges {
+      position: absolute;
+      bottom: 3rem;
+      right: 3rem;
+      display: flex;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.2s forwards;
+    }
+
+    .badge {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .hero-stat-block {
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 1.5rem;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1s 1s forwards;
+    }
+
+    .hero-stat {
+      text-align: center;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      background: rgba(26,36,29,0.5);
+      backdrop-filter: blur(8px);
+      min-width: 200px;
+    }
+
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--cream2);
+      line-height: 1;
+      display: block;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 0.4rem;
+      display: block;
+    }
+
+    /* ── SECTION SHARED ── */
+    section {
+      padding: 6rem 6rem;
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-number {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--green-light);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--cream2);
+      line-height: 1;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--amber-light);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin-left: 1rem;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 3rem;
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .exp-item.visible { opacity: 1; transform: translateY(0); }
+
+    .exp-meta {
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+
+    .exp-period {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--green-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-org {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.3rem;
+    }
+
+    .exp-location {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .exp-role {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--amber-light);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .exp-groups {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .exp-group-title {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green-light);
+      border-left: 2px solid var(--green);
+      padding-left: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .exp-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .exp-bullet {
+      display: flex;
+      gap: 0.8rem;
+      font-size: 0.87rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .exp-bullet::before {
+      content: '→';
+      color: var(--green);
+      flex-shrink: 0;
+      margin-top: 0.05em;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+    }
+
+    /* ── EDUCATION ── */
+    #education {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+    }
+
+    .edu-card {
+      background: var(--bg2);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s;
+    }
+
+    .edu-card.visible { opacity: 1; transform: translateY(0); }
+
+    .edu-card:hover { background: var(--surface); }
+
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--amber);
+      transition: height 0.4s ease;
+    }
+
+    .edu-card:hover::before { height: 100%; }
+
+    .edu-year {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--green-light);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+
+    .edu-degree {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--cream);
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .edu-school {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    /* ── SKILLS ── */
+    #skills {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .skill-category {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .skill-category.visible { opacity: 1; transform: translateY(0); }
+
+    .skill-cat-title {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber-light);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.35rem 0.8rem;
+      border: 1px solid var(--green-pale);
+      color: var(--text);
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .skill-tag:hover {
+      border-color: var(--green-light);
+      color: var(--cream);
+      background: rgba(74,124,89,0.1);
+    }
+
+    /* ── LANGUAGES ── */
+    .languages-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .lang-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+
+    .lang-name {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--cream);
+    }
+
+    .lang-level {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--green-light);
+      letter-spacing: 0.1em;
+    }
+
+    .lang-dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .lang-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .lang-dot.filled { background: var(--green); }
+    .lang-dot.native { background: var(--amber); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--green-light); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ── HERO SVG DECORATION ── */
+    .hero-deco {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* ── DIVIDER ── */
+    .divider-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--green) 0%, var(--amber) 50%, transparent 100%);
+    }
+
+    /* ── SCROLL INDICATOR ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s forwards;
+    }
+
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--green);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--cream);
+      animation: slideRight 2s 2s infinite;
+    }
+
+    @keyframes slideRight {
+      from { left: -100%; }
+      to { left: 100%; }
+    }
+
+    /* ── PROFILE SECTION ── */
+    #profile {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .profile-quote {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.6;
+      border-left: 3px solid var(--amber);
+      padding-left: 1.5rem;
+    }
+
+    .profile-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+
+      #hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 7rem 2rem 3rem; }
+      .hero-right { display: none; }
+
+      section { padding: 4rem 2rem; }
+      footer { padding: 2rem; flex-direction: column; gap: 1rem; }
+      .scroll-hint { left: 2rem; }
+
+      .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+      .exp-meta { position: static; }
+
+      .skills-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .profile-layout { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">S · A · B — M</div>
+  <ul class="nav-links">
+    <li><a href="#profile">Profile</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="mailto:sbrambila71@hotmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Sustainable Systems Architect</div>
+    <h1 class="hero-name">Sergio A.<br><em>Brambila-Macías</em></h1>
+    <div class="hero-title">Ph.D. · Supply Chain Sustainability · EU Regulatory Compliance</div>
+    <p class="hero-tagline">
+      Transforming complexity into clear and operational processes — from CBAM and EUDR compliance to Scope 3 emissions management and circular supply chains.
+    </p>
+    <div class="hero-contacts">
+      <div class="contact-item">
+        <span class="contact-dot"></span>
+        <a href="tel:+46739951370">+46 (0) 73-99-51370</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-dot"></span>
+        <a href="mailto:sbrambila71@hotmail.com">sbrambila71@hotmail.com</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-dot"></span>
+        <span>Värnamo, 33152, Sweden</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-dot"></span>
+        <a href="https://linkedin.com/in/sergio-brambila" target="_blank">LinkedIn Profile</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-dot"></span>
+        <a href="https://scholar.google.com" target="_blank">Google Scholar</a>
+      </div>
+    </div>
+    <div class="nationality-badges">
+      <span class="badge">🇲🇽 Mexican</span>
+      <span class="badge">🇺🇸 American</span>
+      <span class="badge">🇸🇪 Swedish</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Decorative geometric grid art -->
+    <svg class="hero-grid-art" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gridGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4a7c59;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#c8943a;stop-opacity:0.3" />
+        </linearGradient>
+      </defs>
+      <!-- Grid lines -->
+      <g stroke="#4a7c59" stroke-width="0.5" opacity="0.6">
+        <line x1="0" y1="100" x2="600" y2="100"/>
+        <line x1="0" y1="200" x2="600" y2="200"/>
+        <line x1="0" y1="300" x2="600" y2="300"/>
+        <line x1="0" y1="400" x2="600" y2="400"/>
+        <line x1="0" y1="500" x2="600" y2="500"/>
+        <line x1="0" y1="600" x2="600" y2="600"/>
+        <line x1="0" y1="700" x2="600" y2="700"/>
+        <line x1="100" y1="0" x2="100" y2="800"/>
+        <line x1="200" y1="0" x2="200" y2="800"/>
+        <line x1="300" y1="0" x2="300" y2="800"/>
+        <line x1="400" y1="0" x2="400" y2="800"/>
+        <line x1="500" y1="0" x2="500" y2="800"/>
+      </g>
+      <!-- Accent shapes -->
+      <rect x="100" y="100" width="200" height="200" fill="none" stroke="url(#gridGrad)" stroke-width="1.5" opacity="0.8"/>
+      <rect x="300" y="300" width="200" height="200" fill="none" stroke="url(#gridGrad)" stroke-width="1.5" opacity="0.8"/>
+      <rect x="150" y="450" width="100" height="100" fill="rgba(74,124,89,0.08)" stroke="#4a7c59" stroke-width="1" opacity="0.7"/>
+      <rect x="350" y="150" width="150" height="150" fill="rgba(200,148,58,0.05)" stroke="#c8943a" stroke-width="1" opacity="0.7"/>
+      <!-- Dots at intersections -->
+      <circle cx="100" cy="100" r="3" fill="#4a7c59" opacity="0.8"/>
+      <circle cx="300" cy="300" r="4" fill="#c8943a" opacity="0.9"/>
+      <circle cx="500" cy="500" r="3" fill="#4a7c59" opacity="0.8"/>
+      <circle cx="200" cy="600" r="2.5" fill="#c8943a" opacity="0.6"/>
+      <circle cx="400" cy="200" r="2.5" fill="#4a7c59" opacity="0.6"/>
+      <!-- Diagonal accent -->
+      <line x1="100" y1="100" x2="500" y2="700" stroke="url(#gridGrad)" stroke-width="1" opacity="0.3"/>
+      <line x1="500" y1="100" x2="100" y2="500" stroke="#4a7c59" stroke-width="0.5" opacity="0.2"/>
+    </svg>
+
+    <div class="hero-stat-block">
+      <div class="hero-stat">
+        <span class="stat-number">25+</span>
+        <span class="stat-label">Years of Global Experience</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-number">6</span>
+        <span class="stat-label">Languages Spoken</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Nationalities</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span class="scroll-line"></span>
+    Scroll to explore
+  </div>
+</section>
+
+<div class="divider-bar"></div>
+
+<!-- PROFILE -->
+<section id="profile">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Pro<em>file</em></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="profile-layout">
+    <blockquote class="profile-quote">
+      "I transform complexity into clear and operational processes."
+    </blockquote>
+    <p class="profile-text">
+      Experienced Sustainable Systems Architect with deep expertise in sourcing, quality, sustainability, and project management across global supply chains. My work bridges rigorous academic research with hands-on corporate implementation — designing due diligence systems for EU regulatory compliance, building Scope 3 emissions pipelines, and developing supplier sustainability frameworks that scale across multiple regions.<br><br>
+      With a Ph.D. from Linköping University and professional experience spanning Sweden, France, and Mexico, I bring a uniquely cross-cultural and interdisciplinary perspective to the intersection of sustainability, engineering, and business strategy.
+    </p>
+  </div>
+</section>
+
+<div class="divider-bar"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Experi<em>ence</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- Bufab -->
+  <div class="exp-item">
+    <div class="exp-meta">
+      <div class="exp-period">2021 — Present</div>
+      <div class="exp-org">Bufab</div>
+      <div class="exp-location">Värnamo, Sweden</div>
+    </div>
+    <div class="exp-content">
+      <div class="exp-role">Sustainable Sourcing Manager</div>
+      <div class="exp-groups">
+        <div class="exp-group">
+          <div class="exp-group-title">EU Regulatory Compliance — EUDR &amp; CBAM</div>
+          <div class="exp-bullets">
+            <div class="exp-bullet">Led company-wide EUDR compliance program: designing due diligence systems, authoring global instructions and templates, and performing geospatial risk assessments using EU mapping tools.</div>
+            <div class="exp-bullet">Translated evolving CBAM requirements into actionable internal processes, updating formulas and aligning benchmarks with EU standards in real time.</div>
+            <div class="exp-bullet">Drove supplier engagement for CBAM via training videos, communication letters, data collection campaigns, and presentations at EU regulatory webinars.</div>
+            <div class="exp-bullet">Validated and cleaned supplier-reported CBAM data to ensure accuracy before submission.</div>
+          </div>
+        </div>
+        <div class="exp-group">
+          <div class="exp-group-title">Scope 3 Emissions &amp; SBTi</div>
+          <div class="exp-bullets">
+            <div class="exp-bullet">Developed emission factors and managed Scope 3 data pipelines, coordinating supplier engagement and supporting SBTi-aligned group-level reporting.</div>
+            <div class="exp-bullet">Designed a proprietary steel mill emissions database and freight emissions calculation methodology (results: Q1 2026).</div>
+            <div class="exp-bullet">Facilitated internal sustainability workshops with regional coordinators to build Scope 3 reporting capacity across the organization.</div>
+          </div>
+        </div>
+        <div class="exp-group">
+          <div class="exp-group-title">Supplier Sustainability Development</div>
+          <div class="exp-bullets">
+            <div class="exp-bullet">Architected and continuously improved Bufab's Sustainable Supplier Engagement Program (SSEP), driving implementation across multiple regions.</div>
+            <div class="exp-bullet">Authored and maintained the Supplier Sustainability Manual, aligning with ISO standards, CSDDD, EUDR, CBAM, and EU due diligence frameworks.</div>
+            <div class="exp-bullet">Integrated SSEP into company-wide Best Practices, incorporating structured feedback from Regional Sourcing Directors and Sustainability Coordinators.</div>
+          </div>
+        </div>
+        <div class="exp-group">
+          <div class="exp-group-title">Risk Assessment &amp; Governance</div>
+          <div class="exp-bullets">
+            <div class="exp-bullet">Built a multi-dimensional sustainability risk model covering country, commodity, ESG, and supply chain risk, embedded into sourcing decisions and visualized via a Qlik Sense dashboard.</div>
+            <div class="exp-bullet">Developed Bufab's integrated sustainability framework inspired by ISO 9001/14001/45001/50001, CSDDD, and SBTi.</div>
+          </div>
+        </div>
+        <div class="exp-group">
+          <div class="exp-group-title">Training, Capacity Building &amp; Customer Support</div>
+          <div class="exp-bullets">
+            <div class="exp-bullet">Designed and delivered sustainability training across multiple regions: slides, written guides, and e-learning modules hosted on Bufab Academy, plus ongoing mentoring for colleagues and thesis students.</div>
+            <div class="exp-bullet">Supported commercial teams responding to ESG questionnaires, EPD inquiries, and customer sustainability requests.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Linköping -->
+  <div class="exp-item">
+    <div class="exp-meta">
+      <div class="exp-period">2015 — 2021</div>
+      <div class="exp-org">Linköping University</div>
+      <div class="exp-location">Linköping, Sweden</div>
+    </div>
+    <div class="exp-content">
+      <div class="exp-role">Researcher</div>
+      <div class="exp-bullets">
+        <div class="exp-bullet">Collaborated with infrastructure, manufacturing companies, and SMEs on resource efficiency research.</div>
+        <div class="exp-bullet">Developed tools and methods supporting early-stage design for Ecodesign, Product-Service Systems, and Circular Economy applications.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gröna Länken -->
+  <div class="exp-item">
+    <div class="exp-meta">
+      <div class="exp-period">2014 — 2015</div>
+      <div class="exp-org">Gröna Länken</div>
+      <div class="exp-location">Sweden / Mexico</div>
+    </div>
+    <div class="exp-content">
+      <div class="exp-role">Business Owner — Sustainable Solutions</div>
+      <div class="exp-bullets">
+        <div class="exp-bullet">Coordinated renewable energy projects, managed RFQs, and provided consulting on green energy regulations for projects in Mexico.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bioeconomia -->
+  <div class="exp-item">
+    <div class="exp-meta">
+      <div class="exp-period">2008 — 2012</div>
+      <div class="exp-org">Consultores de Bioeconomía</div>
+      <div class="exp-location">Mexico</div>
+    </div>
+    <div class="exp-content">
+      <div class="exp-role">Consultant (Part-time)</div>
+      <div class="exp-bullets">
+        <div class="exp-bullet">Conducted market research and authored operational manuals for agrifood businesses.</div>
+        <div class="exp-bullet">Key deliverable: Manual for Industrial AgroParks in Mexico.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Valeo -->
+  <div class="exp-item">
+    <div class="exp-meta">
+      <div class="exp-period">2007 — 2008</div>
+      <div class="exp-org">Valeo Electrical Systems</div>
+      <div class="exp-location">Créteil, France</div>
+    </div>
+    <div class="exp-content">
+      <div class="exp-role">Purchasing Coordinator</div>
+      <div class="exp-bullets">
+        <div class="exp-bullet">Managed RFQs, ran electronic auctions via Ariba, and consolidated the branch procurement budget.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-bar"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Educa<em>tion</em></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-year">2015 – 2021</div>
+      <div class="edu-degree">Ph.D. in Environmental Management &amp; Engineering / Sustainable Systems</div>
+      <div class="edu-school">Linköping University, Sweden</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-year">2012 – 2014</div>
+      <div class="edu-degree">MSc in Energy and Environmental Engineering</div>
+      <div class="edu-school">Linköping University, Sweden</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-year">2005 – 2006</div>
+      <div class="edu-degree">Specialized Master in Supply Chain Management &amp; Purchasing</div>
+      <div class="edu-school">SKEMA Business School, France</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-year">2003 – 2004</div>
+      <div class="edu-degree">MSc in International Business</div>
+      <div class="edu-school">University of Nottingham, UK</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-year">1998 – 2003</div>
+      <div class="edu-degree">B.Sc. in Industrial Engineering (minor: Systems Engineering)</div>
+      <div class="edu-school">ITESM, Mexico City, Mexico</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-bar"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Skills &amp; <em>Expertise</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-layout">
+    <div class="skill-category">
+      <div class="skill-cat-title">Regulatory Compliance</div>
+      <div class="skill-tags">
+        <span class="skill-tag">CBAM</span>
+        <span class="skill-tag">EUDR</span>
+        <span class="skill-tag">PPWR</span>
+        <span class="skill-tag">REACH</span>
+        <span class="skill-tag">RoHS</span>
+        <span class="skill-tag">Conflict Minerals (CMRT/EMRT)</span>
+        <span class="skill-tag">CSDDD</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-title">Sustainability Reporting</div>
+      <div class="skill-tags">
+        <span class="skill-tag">GRI</span>
+        <span class="skill-tag">TCFD</span>
+        <span class="skill-tag">CSRD (ESRS)</span>
+        <span class="skill-tag">EU Taxonomy</span>
+        <span class="skill-tag">SBTi</span>
+        <span class="skill-tag">GHG Protocol Scope 1–3</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-title">Standards &amp; Frameworks</div>
+      <div class="skill-tags">
+        <span class="skill-tag">ISO 9001:2015</span>
+        <span class="skill-tag">ISO 14001:2015</span>
+        <span class="skill-tag">ISO 45001:2018</span>
+        <span class="skill-tag">ISO 50001</span>
+        <span class="skill-tag">LCA (ISO 14040/14044)</span>
+        <span class="skill-tag">Ecodesign</span>
+        <span class="skill-tag">Circular Economy</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-title">Project &amp; Quality Management</div>
+      <div class="skill-tags">
+        <span class="skill-tag">PMI-based PM</span>
+        <span class="skill-tag">Cross-functional coordination</span>
+        <span class="skill-tag">Lean Manufacturing</span>
+        <span class="skill-tag">Six Sigma Green Belt</span>
+        <span class="skill-tag">Stakeholder engagement</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-title">Tools &amp; Platforms</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Microsoft Office</span>
+        <span class="skill-tag">SharePoint</span>
+        <span class="skill-tag">Qlik Sense</span>
+        <span class="skill-tag">Ariba</span>
+        <span class="skill-tag">EU Geospatial Tools</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-title">Communication &amp; Training</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Corporate training design</span>
+        <span class="skill-tag">E-learning development</span>
+        <span class="skill-tag">Higher education teaching</span>
+        <span class="skill-tag">Multilingual presentations</span>
+        <span class="skill-tag">ESG questionnaire support</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Languages -->
+  <div style="margin-top: 4rem;">
+    <div class="section-header" style="margin-bottom: 2rem;">
+      <span class="section-number">05</span>
+      <h2 class="section-title" style="font-size: 2rem;">Lang<em>uages</em></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="languages-row">
+      <div class="lang-item">
+        <span class="lang-name">Spanish</span>
+        <div class="lang-dots">
+          <span class="lang-dot native"></span><span class="lang-dot native"></span><span class="lang-dot native"></span><span class="lang-dot native"></span><span class="lang-dot native"></span>
+        </div>
+        <span class="lang-level">Native</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">English</span>
+        <div class="lang-dots">
+          <span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span>
+        </div>
+        <span class="lang-level">C2</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">Swedish</span>
+        <div class="lang-dots">
+          <span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot"></span>
+        </div>
+        <span class="lang-level">C1</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">French</span>
+        <div class="lang-dots">
+          <span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot"></span><span class="lang-dot"></span>
+        </div>
+        <span class="lang-level">B2</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">German</span>
+        <div class="lang-dots">
+          <span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot"></span><span class="lang-dot"></span><span class="lang-dot"></span>
+        </div>
+        <span class="lang-level">B1</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">Russian</span>
+        <div class="lang-dots">
+          <span class="lang-dot filled"></span><span class="lang-dot"></span><span class="lang-dot"></span><span class="lang-dot"></span><span class="lang-dot"></span>
+        </div>
+        <span class="lang-level">A1</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Sergio A. Brambila-Macías · Värnamo, Sweden · 2026</div>
+  <div class="footer-links">
+    <a href="mailto:sbrambila71@hotmail.com">Email</a>
+    <a href="https://linkedin.com/in/sergio-brambila" target="_blank">LinkedIn</a>
+    <a href="https://scholar.google.com" target="_blank">Scholar</a>
+  </div>
+</footer>
+
+<script>
+  // ── Intersection Observer for scroll animations ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, entry.target.dataset.delay || 0);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  // Stagger exp items
+  document.querySelectorAll('.exp-item').forEach((el, i) => {
+    el.dataset.delay = i * 100;
+    observer.observe(el);
+  });
+
+  // Stagger edu cards
+  document.querySelectorAll('.edu-card').forEach((el, i) => {
+    el.dataset.delay = i * 80;
+    observer.observe(el);
+  });
+
+  // Stagger skill categories
+  document.querySelectorAll('.skill-category').forEach((el, i) => {
+    el.dataset.delay = i * 80;
+    observer.observe(el);
+  });
+
+  // ── Nav shrink on scroll ──
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 80) {
+      nav.style.padding = '0.8rem 3rem';
+    } else {
+      nav.style.padding = '1.2rem 3rem';
+    }
+  });
+
+  // ── Smooth active nav highlight ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === `#${id}` ? 'var(--cream)' : '';
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -40% 0px' });
+
+  sections.forEach(s => sectionObserver.observe(s));
+</script>
+
+</body>
+</html>
